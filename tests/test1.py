@@ -11,15 +11,54 @@ ETHIOPIA_POLYGON = [[33.226164129944436, 3.1516405655312387],
 
 ethiopia_polygon = ee.Geometry.Polygon(ETHIOPIA_POLYGON)
 
-# s1data = ee.ImageCollection('COPERNICUS/S1_GRD')
+
+def appendBand_modis(current, previous):
+    """
+    Transforms an Image Collection with 1 band per Image into a single Image with items as bands.
+    Makes exporting from Google Earth Engine MUCH simpler/faster!
+    (rather than 7 images for 7 bands @each timestep,
+      creates ONE image of ALL BANDS and ALL TIMESTEPS)
+
+    Author: Jamie Vleeshouwer
+    """
+    band_list = [0,1,2,3,4,5,6]
+
+    # Rename the band
+    previous = ee.Image(previous)
+    current = current.select(band_list)
+    # Append it to the result (Note: only return current item on first element/iteration)
+    accum = ee.Algorithms.If(
+    	ee.Algorithms.IsEqual(previous, None),
+    	current,
+    	previous.addBands(ee.Image(current))
+    	)
+    # Return the accumulation
+    return accum
+
 
 modisdata = (
     ee.ImageCollection('MODIS/006/MOD09A1')
     .filterDate('2002-12-31','2016-8-4')
-    .clip()
+    .filterBounds(ethiopia_polygon)
 )
 
 
+img_ = modisdata.iterate(appendBand_modis)
+image = ee.Image(img_)
+
+
+name = 'image1'
+folder = '_modis'
+scale = 500
+crs = 'EPSG:4326'
+
+task = ee.batch.Export.image(modisdata, name, {
+	'driveFolder': folder,
+	'driveFileNamePrefix': name,
+	'scale': scale,
+	'crs': crs,
+})
+task.start()
 
 # to produce this as an example!
 time = pd.date_range('2002-12-31','2016-8-4',freq='8D')
