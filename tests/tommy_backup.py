@@ -1,3 +1,5 @@
+
+
 import xarray as xr
 import tensorflow as tf
 from pathlib import Path
@@ -7,7 +9,7 @@ import pandas as pd
 from typing import Dict, Tuple
 import re
 
-from tensorflow.core.example.feature_pb2 import Feature as tf_Feature
+import tensorflow.core.example.feature_pb2.Feature as tf_Feature
 
 def make_dict_keys_same_length(dict_: Dict) -> Tuple[Dict, int]:
     """remove the keys that don't match the n_pixels
@@ -57,7 +59,6 @@ def dict_to_ds(dict_: Dict) -> xr.Dataset:
 
 def get_dict_from_tf_feature(data: tf_Feature, idx: int) -> dict:
     # iterate over each key in the image (lat, lon, values)
-    out = {}
     for i in range(len(keys)):
         data = result.features.feature[keys[i]]
         out[keys[i]] = np.array(data.float_list.value)
@@ -76,7 +77,7 @@ def tf_feature_to_dataset(data: tf_Feature, idx: int) -> xr.Dataset:
     return ds
 
 
-def tfrecord_to_xarray(file: str) -> List[xr.Dataset]:
+def tfrecord_to_xarray(file: str) -> Dict:
     """Turn `tfrecord` datatype into a dictionary of equal length
     lists (pixels).
 
@@ -92,15 +93,9 @@ def tfrecord_to_xarray(file: str) -> List[xr.Dataset]:
         ds = tf_feature_to_dataset(data, i)
         ds_timesteps.append(ds)
 
-    return ds_timesteps
+    out_ds = xr.merge(ds_timesteps)
 
-
-file = '/Users/tommylees/Downloads/EMSR122_01STRYMONAS_01DELINEATION_MONIT03_v1_75000_area_of_interest.tfrecord'
-
-assert Path(file).exists(), f"{file} Does not exist!"
-
-ds_timesteps = tfrecord_to_xarray(file)
-out_ds = xr.merge(ds_timesteps)
+    return out_ds
 
 
 out = {}
@@ -123,6 +118,9 @@ out = make_dict_keys_same_length(out)
 
 
 
+file = '/Users/tommylees/Downloads/EMSR122_01STRYMONAS_01DELINEATION_MONIT03_v1_75000_area_of_interest.tfrecord'
+
+assert Path(file).exists(), f"{file} Does not exist!"
 
 
 
@@ -140,7 +138,6 @@ i, example = [(i, e) for i, e in enumerate(tf.python_io.tf_record_iterator(file)
 result = tf.train.Example.FromString(example)
 # get the keys for that image
 keys = [k for k in result.features.feature.keys()]
-
 # get the data for that image
 for i in range(len(keys)):
     data = result.features.feature[keys[i]]
