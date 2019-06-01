@@ -18,3 +18,5 @@ ethiopia_polygon = ee.Geometry.Polygon(ETHIOPIA_POLYGON)
 collection_to_export = collection.filterBounds(ethiopia_polygon)
 
 export_to_tfrecord(collection_to_export, ethiopia_polygon)
+
+print("test")
