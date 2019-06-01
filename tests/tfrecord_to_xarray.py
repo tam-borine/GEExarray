@@ -18,7 +18,8 @@ Path(file).exists()
 
 for example in tf.python_io.tf_record_iterator(file):
     result = tf.train.Example.FromString(example)
-    print(result)
+    value = get_value_from_Example(result, 'constant')
+    print(value)
 
 for example in tf.python_io.tf_record_iterator(file):
     result = tf.train.Example.FromString(example)

@@ -16,7 +16,10 @@ ethiopia_polygon = ee.Geometry.Polygon(ETHIOPIA_POLYGON)
 modisdata = (
     ee.ImageCollection('MODIS/006/MOD09A1')
     .filterDate('2002-12-31','2016-8-4')
+    .clip()
 )
+
+
 
 # to produce this as an example!
 time = pd.date_range('2002-12-31','2016-8-4',freq='8D')
