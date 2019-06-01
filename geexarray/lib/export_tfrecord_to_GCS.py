@@ -1,9 +1,9 @@
-
+import ee
 
 
 def export(image, bounds, file_name_prefix):
   task = ee.batch.Export.image.toCloudStorage(
-    image=img,
+    image=image,
     bucket='geexarray',
     fileNamePrefix=file_name_prefix,
     region=bounds.getInfo()['coordinates'],
@@ -16,7 +16,7 @@ def export(image, bounds, file_name_prefix):
   task.start()
 
 def export_to_tfrecord(image_collection, bounds):
-  file_name_prefix = ee.String(image_collection.get("system:id"))
+  file_name_prefix = ee.String(image_collection.get("system:id")).getInfo()
   img = image_collection.toBands()
   export(img, bounds, file_name_prefix)
   

@@ -8,4 +8,8 @@ setup(name='geexarray',
       author_email='',
       license='MIT',
       packages=['geexarray'],
+      install_requires=[
+          'earthengine-api',
+          'xarray'
+        ],
       zip_safe=False)
