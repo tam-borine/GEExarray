@@ -1,6 +1,5 @@
 import ee
 
-
 def export(image, bounds, file_name_prefix):
   task = ee.batch.Export.image.toCloudStorage(
     image=image,
