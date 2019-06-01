@@ -63,8 +63,8 @@ def get_dict_from_tf_feature(data: tf_Feature, idx: int) -> dict:
         out[keys[i]] = np.array(data.float_list.value)
 
     out, n_pixels = make_dict_keys_same_length(out)
-    # parsed_time = find_timestep(string)
-    times = [str(idx) for _ in range(n_pixels)]
+    # parsed_time = pd.to_datetime(find_timestep(string))
+    times = [idx for _ in range(n_pixels)]
     out['time'] = times
 
     return out
