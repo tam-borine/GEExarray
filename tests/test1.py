@@ -2,7 +2,7 @@ import ee
 
 ee.Initialize()
 
-#
+
 ETHIOPIA_POLYGON = [[33.226164129944436, 3.1516405655312387],
                     [49.222257879944436, 3.0638792066536986],
                     [49.178312567444436, 15.527940133202428],
@@ -19,5 +19,3 @@ modisdata = (
 )
 
 #
-def _(ImageCollection: str, year: List[int]):
-    return
