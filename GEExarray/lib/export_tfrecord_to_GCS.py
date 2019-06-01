@@ -20,3 +20,6 @@ def export_to_tfrecord(image_collection, bounds):
   img = image_collection.toBands()
   export(img, bounds, file_name_prefix)
   
+
+def testing():
+    print("yeahhhh")
