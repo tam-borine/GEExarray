@@ -15,5 +15,6 @@ setup(name='geexarray',
           'pandas',
           'tensorflow',
           'scipy',
+          'google-cloud-storage'
         ],
       zip_safe=False)
