@@ -22,10 +22,7 @@ Data variables:
 
 # Set up Google Cloud Storage (GCS)
 
-As currently GEE exports only to Google Drive and Google Cloud Storage, we will need to use the latter as an intermediary for now. Ensure you have done the following:
-
-1. Get an account with [GCS](https://cloud.google.com/storage/) and create a project and buckets for your data.
-2. Download a `.json` credentials file for authenticating, as [specified here](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) .
+As currently GEE exports only to Google Drive and Google Cloud Storage, we will need to use the latter as an intermediary for now. Ensure you have an account with [GCS](https://cloud.google.com/storage/) and create a project and buckets for your data.
 
 # Using GEEXarray
 
@@ -34,7 +31,7 @@ For each ImageCollection you want to convert to an xarray dataset, make a new in
 ``` 
 from geexarray.api import GEEXarray
 
-gx = GEEXarray('the_best_bucket', 'the_best_buckete8b924bc.json', timeout=600)
+gx = GEEXarray('the_best_bucket')
 
 gx.to_xarray(my_imagecollection, geometry_bounds_object)
 ```
