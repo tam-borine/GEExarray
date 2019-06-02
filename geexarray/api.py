@@ -20,5 +20,7 @@ class GEEXarray:
 
     def to_xarray(self, collection, bounds):
         # add the lon-lat information in the export
-        collection = collection.map(lambda im: im.addBands(ee.Image.pixelLonLat()))
+        collection = collection.map(
+            lambda im: im.addBands(ee.Image.pixelLonLat())
+        )
         export_to_tfrecord(collection, bounds, self.bucket)

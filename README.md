@@ -28,7 +28,7 @@ As currently GEE exports only to Google Drive and Google Cloud Storage, we will 
 
 For each ImageCollection you want to convert to an xarray dataset, make a new instance of GEEXarray, specifying your GCS bucket name and credentials file like so:
 
-``` 
+```
 from geexarray.api import GEEXarray
 
 gx = GEEXarray('the_best_bucket')
@@ -41,3 +41,22 @@ The optional timeout parameter specifies how long you are happy to wait for the 
 ## References
 - [Discussion on `Pangeo` github thread](https://github.com/pangeo-data/pangeo/issues/216)
 - [Writing netCDF files to GEE](http://arbennett.github.io/software,/hydrology/2017/07/30/netcdfToGEE.html)
+- [Iterating over ImageCollection and Downloading](https://stackoverflow.com/a/46961005/9940782)
+- [Extracting images that meet a criteria from EE](https://gis.stackexchange.com/questions/315541/extracting-qualified-image-patches-in-google-earth-engine)
+- [Processing Rainfall data from EE](https://gis.stackexchange.com/questions/293076/python-script-tool-fails-when-processing-rainfall-data-from-google-earth-engine)
+- [ImageCollection to DataFrame](https://gis.stackexchange.com/questions/257727/iterate-over-imagecollection-returning-pandas-dataframe-using-earth-engine-pyt?rq=1)
+- [to DF](https://gis.stackexchange.com/a/257748/123489)
+- [Clipping vs. Filtering](https://gis.stackexchange.com/questions/247955/clipping-vs-filtering-images-with-a-polygon-google-earth-engine)
+
+## The major functions
+1. Append lat lon to imageCollection
+    ```
+    collection = collection.map(
+        lambda im: im.addBands(ee.Image.pixelLonLat())
+    )
+    ```
+
+2. Append time to imageCollection
+    ```
+
+    ```

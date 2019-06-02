@@ -24,21 +24,24 @@ def export(
     max_pixels=1E10, dims=[100,100]
 ):
     task = ee.batch.Export.image.toCloudStorage(
-        image=image,
-        bucket=bucket_name,
-        fileNamePrefix=file_name_prefix,
-        region=bounds.getInfo()['coordinates'],
-        scale=get_scale(file_name_prefix),
-        maxPixels=max_pixels,
-        fileFormat='TFRecord',
-        formatOptions={'patchDimensions': dims}
+        image = image,
+        bucket = bucket_name,
+        fileNamePrefix = file_name_prefix,
+        region = bounds.getInfo()['coordinates'],
+        scale = get_scale(file_name_prefix),
+        maxPixels = max_pixels,
+        fileFormat = 'TFRecord',
+        formatOptions = {'patchDimensions': dims}
     )
 
     task.start()
     return task
+    
 
 def export_to_tfrecord(image_collection, bounds, bucket_name):
-  file_name_prefix = ee.String(image_collection.get("system:id")).getInfo()
+  file_name_prefix = ee.String(
+    image_collection.get("system:id")
+  ).getInfo()
   # convert the ImageCollection (dims,bands,times) to bands
   img = image_collection.toBands()
   task = export(img, bounds, bucket_name, file_name_prefix)
