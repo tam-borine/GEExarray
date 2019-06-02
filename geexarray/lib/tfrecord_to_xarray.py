@@ -9,28 +9,6 @@ import re
 
 from tensorflow.core.example.feature_pb2 import Feature as tf_Feature
 
-def make_dict_keys_same_length(dict_: Dict) -> Tuple[Dict, int]:
-    """remove the keys that don't match the n_pixels
-    Note: n_pixels estimated as the modal list
-     length for values in the dict
-    """
-    keys = [k for k in dict_.keys()]
-    # get the length of the values as most common value (N PIXELS)
-    lengths = [len(dict_[key]) for key in keys]
-
-    # N PIXELS
-    n_pixel_estimate = stats.mode(np.array(lengths)).mode[0]
-
-    # pop the keys that don't match
-    popped = [
-        (key, dict_.pop(key)[:5]) for key in keys
-        if len(dict_[key]) != n_pixel_estimate
-    ]
-    print(f"{popped} keys popped!")
-
-    return dict_, n_pixel_estimate
-
-
 def find_timestep(string: str) -> str:
     # find the first string pattern matching
     ts_regex = re.compile(r"\d{4}_\d{2}_\d{2}")
