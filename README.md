@@ -29,15 +29,17 @@ As currently GEE exports only to Google Drive and Google Cloud Storage, we will 
 
 # Using GEEXarray
 
-`import from geexarray.api import GEEXarray`
-
 For each ImageCollection you want to convert to an xarray dataset, make a new instance of GEEXarray, specifying your GCS bucket name and credentials file like so:
 
-`gx = GEEXarray('the_best_bucket', 'the_best_buckete8b924bc.json')`
+``` 
+import from geexarray.api import GEEXarray
 
-Then simply call:
+gx = GEEXarray('the_best_bucket', 'the_best_buckete8b924bc.json', timeout=600)
 
-`gx.to_xarray(my_imagecollection, geometry_bounds_object)`
+gx.to_xarray(my_imagecollection, geometry_bounds_object)
+```
+
+The optional timeout parameter specifies how long you are happy to wait for the export from GEE. This will vary by the size of the ImageCollection you are exporting. Defaults to 10 minutes. You can reduce it by decreasing the size of geometry bounds, or [filtering](https://developers.google.com/earth-engine/ic_filtering) your ImageCollection to a narrower date range.
 
 ## References
 - [Discussion on `Pangeo` github thread](https://github.com/pangeo-data/pangeo/issues/216)
