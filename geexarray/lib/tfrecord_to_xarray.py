@@ -55,7 +55,7 @@ def dict_to_ds(dict_: Dict) -> xr.Dataset:
     return ds
 
 
-def get_dict_from_tf_feature(data: tf_Feature, idx: int) -> dict:
+def get_dict_from_tf_feature(result: tf_Feature, idx: int, keys: List) -> dict:
     # iterate over each key in the image (lat, lon, values)
     out = {}
     for i in range(len(keys)):
@@ -87,9 +87,8 @@ def tfrecord_to_xarray(file: str) -> List[xr.Dataset]:
         # read as a dict-like object
         result = tf.train.Example.FromString(example)
         keys = [k for k in result.features.feature.keys()]
-        data = result.features.feature
 
-        ds = tf_feature_to_dataset(data, i)
+        ds = tf_feature_to_dataset(result, i, keys)
         ds_timesteps.append(ds)
 
     return ds_timesteps
