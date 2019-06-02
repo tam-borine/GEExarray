@@ -8,7 +8,7 @@ from geexarray.lib.export_tfrecord_to_GCS import export_to_tfrecord
 
 class GEEXarray:
 
-    def __init__(self, bucket_name="geexarray", gcloud_creds="/Disso-e55e8b924bcf.json", timeout=600:
+    def __init__(self, bucket_name="geexarray", gcloud_creds="/Disso-e55e8b924bcf.json", timeout=600):
         # we need gcloud_creds for authenticating to GCS, TODO tell user to specify in docs
         """ Create a new converter """
         self.bucket = bucket_name
@@ -31,6 +31,6 @@ class GEEXarray:
         file_name_prefix = export_to_tfrecord(collection,bounds, self.bucket)
         name = file_name_prefix+"mixer.json"
         # check export is done then call tfrecord to xarray module.
-        # __check_upload(name) # waits 15 mins - DANGER.
+        # __check_upload(name) # waits 10 mins - DANGER.
 
         
