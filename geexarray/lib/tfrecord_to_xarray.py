@@ -4,7 +4,7 @@ from pathlib import Path
 from scipy import stats
 import numpy as np
 import pandas as pd
-from typing import Dict, Tuple
+from typing import Dict, Tuple, List
 import re
 
 from tensorflow.core.example.feature_pb2 import Feature as tf_Feature
@@ -44,7 +44,6 @@ def find_timestep(string: str) -> str:
 
 def dict_to_ds(dict_: Dict) -> xr.Dataset:
     df = pd.DataFrame(dict_)
-    ts
     try:
         df = df.set_index(['latitude','longitude', 'time'])
     except KeyError:
@@ -70,8 +69,8 @@ def get_dict_from_tf_feature(result: tf_Feature, idx: int, keys: List) -> dict:
     return out
 
 
-def tf_feature_to_dataset(data: tf_Feature, idx: int) -> xr.Dataset:
-    out = get_dict_from_tf_feature(data, idx)
+def tf_feature_to_dataset(data: tf_Feature, idx: int, keys: List) -> xr.Dataset:
+    out = get_dict_from_tf_feature(data, idx, keys)
     ds = dict_to_ds(out)
     return ds
 
@@ -92,3 +91,6 @@ def tfrecord_to_xarray(file: str) -> List[xr.Dataset]:
         ds_timesteps.append(ds)
 
     return ds_timesteps
+
+
+tfrecord_to_xarray(file)
