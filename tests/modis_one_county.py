@@ -5,10 +5,6 @@ import os
 from GEExarray.lib.make_bounds import get_kenya, region_to_polygon
 from GEExarray.api import GEEXarray
 
-# if os.getcwd().split('/')[-2] == 'GEExarray':
-    # sys.path.append('..')
-
-
 gx = GEEXarray()
 
 ee.Initialize()
@@ -30,5 +26,7 @@ modis_collection = (
     .filterDate('2002-12-31','2016-8-4')
 )
 
-print("Exporting MODIS to ")
+print("Exporting MODIS to Cloud")
 gx.to_xarray(modis_collection, bounds)
+
+#

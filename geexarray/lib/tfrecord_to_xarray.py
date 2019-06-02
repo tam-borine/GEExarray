@@ -9,10 +9,11 @@ import re
 
 from tensorflow.core.example.feature_pb2 import Feature as tf_Feature
 
+
 def find_timestep(string: str) -> str:
     # find the first string pattern matching
     ts_regex = re.compile(r"\d{4}_\d{2}_\d{2}")
-    ts = ts_regex.findall(string)
+    ts = ts_regex.findall(string)[0]
 
     # return either empty string or the captured year
     ts = ts if ts != [] else ''
@@ -20,12 +21,15 @@ def find_timestep(string: str) -> str:
     return ts
 
 
+
+
+
 def dict_to_ds(dict_: Dict) -> xr.Dataset:
     df = pd.DataFrame(dict_)
     try:
-        df = df.set_index(['latitude','longitude', 'time'])
+        df = df.set_index(['latitude', 'longitude', 'time'])
     except KeyError:
-        df = df.set_index(['lat','lon', 'time'])
+        df = df.set_index(['lat', 'lon', 'time'])
 
     ds = df.to_xarray()
 
@@ -37,11 +41,19 @@ def get_dict_from_tf_feature(result: tf_Feature, idx: int, keys: List) -> dict:
     out = {}
     for i in range(len(keys)):
         data = result.features.feature[keys[i]]
-        out[keys[i]] = np.array(data.float_list.value)
+
+        # extract the data as EITHER float OR int (varies by resource)
+        list_of_values = np.array(data.float_list.value)
+        if list_of_values.size == 0:
+            list_of_values = np.array(data.int64_list.value)
+        out[keys[i]] = list_of_values
 
     out, n_pixels = make_dict_keys_same_length(out)
     # parsed_time = pd.to_datetime(find_timestep(string))
-    times = [idx for _ in range(n_pixels)]
+
+    # if none of the timestamps can be found
+    if all([find_timestep(key) == '' for key in out.keys()]):
+        times = [idx for _ in range(n_pixels)]
     out['time'] = times
 
     return out
@@ -69,6 +81,3 @@ def tfrecord_to_xarray(file: str) -> List[xr.Dataset]:
         ds_timesteps.append(ds)
 
     return ds_timesteps
-
-
-tfrecord_to_xarray(file)

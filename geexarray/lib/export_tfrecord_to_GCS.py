@@ -19,7 +19,10 @@ def _wait(task):
     time.sleep(60)
 
 
-def export(image, bounds, bucket_name, file_name_prefix, max_pixels=1E10, dims=[26,26]):
+def export(
+    image, bounds, bucket_name, file_name_prefix,
+    max_pixels=1E10, dims=[100,100]
+):
     task = ee.batch.Export.image.toCloudStorage(
         image=image,
         bucket=bucket_name,
