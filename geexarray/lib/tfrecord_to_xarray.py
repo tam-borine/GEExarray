@@ -55,11 +55,11 @@ def dict_to_ds(dict_: Dict) -> xr.Dataset:
     return ds
 
 
-def get_dict_from_tf_feature(result: tf_Feature, idx: int, keys: List) -> dict:
+def get_dict_from_tf_feature(result: tf_Feature, idx: int, key: str) -> dict:
     # iterate over each key in the image (lat, lon, values)
     out = {}
     for i in range(len(keys)):
-        data = result.features.feature[keys[i]]
+        data = result.features.feature[key]
         out[keys[i]] = np.array(data.float_list.value)
 
     out, n_pixels = make_dict_keys_same_length(out)
@@ -88,7 +88,7 @@ def tfrecord_to_xarray(file: str) -> List[xr.Dataset]:
         result = tf.train.Example.FromString(example)
         keys = [k for k in result.features.feature.keys()]
 
-        ds = tf_feature_to_dataset(result, i, keys)
+        ds = tf_feature_to_dataset(result, i, keys[i])
         ds_timesteps.append(ds)
 
     return ds_timesteps
