@@ -10,6 +10,7 @@ setup(name='geexarray',
       packages=['geexarray'],
       install_requires=[
           'earthengine-api',
-          'xarray'
+          'xarray',
+          'google-cloud-storage'
         ],
       zip_safe=False)
