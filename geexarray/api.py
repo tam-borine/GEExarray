@@ -21,7 +21,13 @@ class GEEXarray:
             if somepredicate(*args, **kwargs): return True
             time.sleep(period)
         return False
-        
+
+    def _wait(task):
+        while task.status()['state'] == 'RUNNING':
+            print('Running...')
+            # Perhaps task.cancel() at some point.
+            time.sleep(60)
+
     def __check_upload(self,name):
         storage_client = storage.Client()
         bucket = storage_client.bucket(self.bucket)
@@ -29,8 +35,6 @@ class GEEXarray:
 
     def to_xarray(self, collection, bounds):
         file_name_prefix = export_to_tfrecord(collection,bounds, self.bucket)
-        name = file_name_prefix+"mixer.json"
+        name = file_name_prefix + "mixer.json"
         # check export is done then call tfrecord to xarray module.
         # __check_upload(name) # waits 10 mins - DANGER.
-
-        
