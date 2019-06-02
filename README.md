@@ -15,6 +15,32 @@ Data variables:
     precip   (time, lat, lon) float32 ...
 ```
 
+# Install
+
+(Coming soon):
+`pip install geexarray`
+
+# Set up Google Cloud Storage (GCS)
+
+As currently GEE exports only to Google Drive and Google Cloud Storage, we will need to use the latter as an intermediary for now. Ensure you have done the following:
+
+1. Get an account with [GCS](https://cloud.google.com/storage/) and create a project and buckets for your data.
+2. Download a `.json` credentials file for authenticating, as [specified here](https://cloud.google.com/docs/authentication/production#obtaining_and_providing_service_account_credentials_manually) .
+
+# Using GEEXarray
+
+For each ImageCollection you want to convert to an xarray dataset, make a new instance of GEEXarray, specifying your GCS bucket name and credentials file like so:
+
+``` 
+import from geexarray.api import GEEXarray
+
+gx = GEEXarray('the_best_bucket', 'the_best_buckete8b924bc.json', timeout=600)
+
+gx.to_xarray(my_imagecollection, geometry_bounds_object)
+```
+
+The optional timeout parameter specifies how long you are happy to wait for the export from GEE. This will vary by the size of the ImageCollection you are exporting. Defaults to 10 minutes. You can reduce it by decreasing the size of geometry bounds, or [filtering](https://developers.google.com/earth-engine/ic_filtering) your ImageCollection to a narrower date range.
+
 ## References
 - [Discussion on `Pangeo` github thread](https://github.com/pangeo-data/pangeo/issues/216)
 - [Writing netCDF files to GEE](http://arbennett.github.io/software,/hydrology/2017/07/30/netcdfToGEE.html)
