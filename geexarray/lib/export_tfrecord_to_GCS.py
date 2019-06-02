@@ -16,9 +16,10 @@ def export(image, bounds, file_name_prefix):
 
 def export_to_tfrecord(image_collection, bounds):
   file_name_prefix = ee.String(image_collection.get("system:id")).getInfo()
+  # convert the ImageCollection (dims,bands,times) to bands
   img = image_collection.toBands()
   export(img, bounds, file_name_prefix)
-  
+
 
 def testing():
     print("yeahhhh")
