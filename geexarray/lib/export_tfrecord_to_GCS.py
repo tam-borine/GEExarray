@@ -20,19 +20,19 @@ def _wait(task):
 
 
 def export(image, bounds, bucket_name, file_name_prefix, max_pixels=1E10, dims=[26,26]):
-  task = ee.batch.Export.image.toCloudStorage(
-    image=image,
-    bucket=bucket_name,
-    fileNamePrefix=file_name_prefix,
-    region=bounds.getInfo()['coordinates'],
-    scale=get_scale(file_name_prefix),
-    maxPixels=max_pixels,
-    fileFormat='TFRecord',
-      formatOptions={'patchDimensions': dims}
-  )
+    task = ee.batch.Export.image.toCloudStorage(
+        image=image,
+        bucket=bucket_name,
+        fileNamePrefix=file_name_prefix,
+        region=bounds.getInfo()['coordinates'],
+        scale=get_scale(file_name_prefix),
+        maxPixels=max_pixels,
+        fileFormat='TFRecord',
+        formatOptions={'patchDimensions': dims}
+    )
 
-  task.start()
-  return task
+    task.start()
+    return task
 
 def export_to_tfrecord(image_collection, bounds, bucket_name):
   file_name_prefix = ee.String(image_collection.get("system:id")).getInfo()

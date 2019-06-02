@@ -18,4 +18,4 @@ class GEEXarray:
         self.bucket = bucket_name
 
     def to_xarray(self, collection, bounds):
-        export_to_tfrecord(collection,bounds, self.bucket)
+        export_to_tfrecord(collection, bounds, self.bucket)

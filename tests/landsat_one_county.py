@@ -2,21 +2,23 @@ import ee
 import sys
 import os
 
-if os.getcwd().split('/')[-2] == 'GEExarray':
-    sys.path.append('..')
-
-print(os.getcwd())
-print(sys.path)
-
+from GEExarray.lib.make_bounds import get_kenya, region_to_polygon
 from GEExarray.api import GEEXarray
+
+# if os.getcwd().split('/')[-2] == 'GEExarray':
+    # sys.path.append('..')
+
 
 gx = GEEXarray()
 
 ee.Initialize()
 
-table = ee.FeatureCollection("TIGER/2016/Counties");
-county = table.filterMetadata('NAMELSAD','equals','Bracken County');
-bounds = ee.Feature(county);
+# table = ee.FeatureCollection("TIGER/2016/Counties");
+# county = table.filterMetadata('NAMELSAD','equals','Bracken County');
+# bounds = ee.Feature(county);
+
+region = get_kenya()
+bounds = region_to_polygon(region)
 
 landsat_collection = (
     ee.ImageCollection('LANDSAT/LE07/C01/T1')
@@ -28,4 +30,5 @@ modis_collection = (
     .filterDate('2002-12-31','2016-8-4')
 )
 
-gx.to_xarray(landsat_collection, bounds)
+print("Exporting MODIS to ")
+gx.to_xarray(modis_collection, bounds)
