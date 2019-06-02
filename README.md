@@ -32,7 +32,7 @@ As currently GEE exports only to Google Drive and Google Cloud Storage, we will 
 For each ImageCollection you want to convert to an xarray dataset, make a new instance of GEEXarray, specifying your GCS bucket name and credentials file like so:
 
 ``` 
-import from geexarray.api import GEEXarray
+from geexarray.api import GEEXarray
 
 gx = GEEXarray('the_best_bucket', 'the_best_buckete8b924bc.json', timeout=600)
 
