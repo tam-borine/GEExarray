@@ -1,8 +1,12 @@
 import os, sys, time
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+
+sys.path.append(
+    os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+)
+
 from google.cloud import storage
 
-from geexarray.lib.export_tfrecord_to_GCS import export_to_tfrecord
+from GEExarray.lib.export_tfrecord_to_GCS import export_to_tfrecord
 
 # from geexarray.lib.tfrecord_to_xarray import
 

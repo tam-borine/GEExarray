@@ -1,8 +1,16 @@
 import ee
-from geexarray.api import GEEXarray
+import sys
+import os
+
+if os.getcwd().split('/')[-2] == 'GEExarray':
+    sys.path.append('..')
+
+print(os.getcwd())
+print(sys.path)
+
+from GEExarray.api import GEEXarray
 
 gx = GEEXarray()
-
 
 ee.Initialize()
 
@@ -20,4 +28,4 @@ modis_collection = (
     .filterDate('2002-12-31','2016-8-4')
 )
 
-gx.to_xarray(modis_collection, bounds)
+gx.to_xarray(landsat_collection, bounds)

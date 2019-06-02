@@ -1,5 +1,3 @@
-
-
 import xarray as xr
 import tensorflow as tf
 from pathlib import Path
@@ -46,7 +44,6 @@ def find_timestep(string: str) -> str:
 
 def dict_to_ds(dict_: Dict) -> xr.Dataset:
     df = pd.DataFrame(dict_)
-    ts
     try:
         df = df.set_index(['latitude','longitude', 'time'])
     except KeyError:
